@@ -37,4 +37,19 @@ contract Vendor is Ownable {
   }
 
 	// ToDo: create a sellTokens(uint256 _amount) function:
+
+	function sellTokens(uint256 amount) public {
+		require(amount > 0, "Input a number greater than 0 to sell");
+		address user = msg.sender;
+		uint256 userBalance = yourToken.balanceOf(user);
+		require(userBalance >= amount, "You do not have enough tokens");
+		uint256 amountOfEth = amount / tokensPerEth;
+		uint256 vendorEthBalance = address(this).balance;
+		require(vendorEthBalance >= amountOfEth, "Vendor does not have enough ETH");
+		(bool sent) = yourToken.transferFrom(user, address(this), amount);
+		require(sent, "Failed to transfer tokens");
+		(bool ethSent, ) = user.call{value: amountOfEth }("");
+		require(ethSent, "Failed to send ETH");
+
+	}
 }

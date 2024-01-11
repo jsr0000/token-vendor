@@ -36,8 +36,6 @@ contract Vendor is Ownable {
     require(sent, "Failed to withdraw funds");
   }
 
-	// ToDo: create a sellTokens(uint256 _amount) function:
-
 	function sellTokens(uint256 amount) public {
 		require(amount > 0, "Input a number greater than 0 to sell");
 		address user = msg.sender;
